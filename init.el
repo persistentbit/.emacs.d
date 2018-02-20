@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode t)
  '(cua-mode t nil (cua-base))
+ '(package-selected-packages (quote (magit)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -48,3 +49,30 @@
 (setq initial-frame-alist '((top .10) (left .30)
 			    (width .90) (height .50)))
 (setq default-frame-alist '((width .80) (height .45)))
+
+
+;; Remember cursor position...
+(save-place-mode 1)
+
+
+;;
+;;Lookup in WikiPedia
+;;
+;;
+(require 'browse-url) ; part of gnu-emacs
+
+(defun my-lookup-wikipedia()
+  "Lookup the word under the cursor in wikipedia.
+  If there is a text selection (a phrase), use that.
+
+This command switches to browser."
+  (interactive)
+  (let (word)
+    (setq word
+	  (if (use-region-p)
+	      (buffer-substring-no-properties (region-beginning) (region-end))
+	    (current-word)))
+    (setq word (replace-regexp-in-string " " "_" word))
+    (browse-url (concat "http://en.wikipedia.org/wiki/" word))
+    ;; (eww myUrl) ; emacs's own browser
+    ))
