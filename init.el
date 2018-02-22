@@ -163,4 +163,4 @@ This command switches to browser."
         (prompt (append '("File name: ") tocpl))
         (fname (completing-read (car prompt) (cdr prompt) nil nil)))
         (find-file (cdr (assoc-ignore-representation fname tocpl)))))
-(global-set-key (kbd "M-<f1>") 'recentf-open-files-compl)
+(global-set-key (kbd "<f1>") 'recentf-open-files-compl)
