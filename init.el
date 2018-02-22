@@ -58,13 +58,13 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; when using make-frame (C-x 5 2), use other position
-(setq initial-frame-alist '((top .10) (left .30)
-			    (width .90) (height .50)))
-(setq default-frame-alist '((width .80) (height .45)))
+;;(setq initial-frame-alist '((top .10) (left .30)
+;;
+;;(setq default-frame-alist '((width .80) (height .45)))
 
 
 ;; Remember cursor position...
-(save-place-mode 1)
+;;(save-place-mode 1)
 
 
 ;;
@@ -121,3 +121,46 @@ This command switches to browser."
      ;;more info at https://github.com/abo-abo/ace-window
     )
   )
+(setq default-frame-alist
+      '(
+        (width . 80) (height . 53)
+        
+        ))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (java . t)
+   (python . t)
+   (sql . t)
+   (js . t)
+   (haskell .t)
+   (plantuml .t)
+   (sh .t)
+   ))
+
+(setf org-src-fontify-natively t)
+(setq org-confirm-babel-evaluate nil)
+
+;;
+;; Recent Files
+;;
+
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; Enable to autosave recent files every 5 minutes
+;;(run-at-time nil (* 5 60) 'recentf-save-list)
+
+;;
+;; Recent files auto complete: Bound to M-<f1>
+;;
+(defun recentf-open-files-compl ()
+      (interactive)
+      (let* ((all-files recentf-list)
+        (tocpl (mapcar (function 
+           (lambda (x) (cons (file-name-nondirectory x) x))) all-files))
+        (prompt (append '("File name: ") tocpl))
+        (fname (completing-read (car prompt) (cdr prompt) nil nil)))
+        (find-file (cdr (assoc-ignore-representation fname tocpl)))))
+(global-set-key (kbd "M-<f1>") 'recentf-open-files-compl)
