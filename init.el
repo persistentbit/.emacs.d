@@ -31,7 +31,7 @@
     ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
  '(package-selected-packages
    (quote
-    (ace-window dracula-theme projectile use-package magit)))
+    (org-bullets which-key ace-window dracula-theme projectile use-package magit)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -164,3 +164,26 @@ This command switches to browser."
         (fname (completing-read (car prompt) (cdr prompt) nil nil)))
         (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 (global-set-key (kbd "<f1>") 'recentf-open-files-compl)
+
+;;
+;; which-key
+;;
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+;;
+;; magit GIT
+;;
+(use-package magit
+  :config
+  (global-set-key (kbd "C-c m") 'magit-status))
+
+
+;;
+;; org-bullets
+;;
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
