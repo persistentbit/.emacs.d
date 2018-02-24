@@ -4,13 +4,17 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(when (>= emacs-major-version 24)
+
   (require 'package)
+
+(add-to-list
+   'package-archives
+   '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
+   )
   (add-to-list
    'package-archives
-   ;; '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
    '("melpa" . "http://melpa.milkbox.net/packages/")
-   t))
+   t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -284,3 +288,12 @@ This command switches to browser."
 ;;  :ensure t
 ;;  :init(add-hook 'lisp-mode-hook(lambda () (slime-mode t)))
 ;;  )
+
+
+;; set up closure
+;;
+
+(unless (package-installed-p 'cider)
+  (package-refresh-contents)
+  (package-install 'cider))
+
