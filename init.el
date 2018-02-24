@@ -9,12 +9,12 @@
 
 (add-to-list
    'package-archives
-   '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
-   )
-  (add-to-list
-   'package-archives
    '("melpa" . "http://melpa.milkbox.net/packages/")
    t)
+;;(add-to-list
+;;   'package-archives
+;;   '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
+;;   t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -35,7 +35,7 @@
     ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
  '(package-selected-packages
    (quote
-    (slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
+    (cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
