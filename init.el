@@ -278,7 +278,10 @@ This command switches to browser."
    (haskell .t)
    (plantuml .t)
    (sh .t)
+   (clojure . t)
    ))
+(setq org-babel-clojure-backend 'cider)
+(setq org-babel-clojure-nrepl-timeout nil)
 
 (setf org-src-fontify-natively t)
 (setq org-confirm-babel-evaluate nil)
@@ -422,10 +425,10 @@ This command switches to browser."
 ;;
 ;; Set up slime
 ;;
-;;(use-package slime
-;;  :ensure t
-;;  :init(add-hook 'lisp-mode-hook(lambda () (slime-mode t)))
-;;  )
+(use-package slime
+  :ensure t
+  :init(add-hook 'lisp-mode-hook(lambda () (slime-mode t)))
+)
 
 ;;
 ;;  AUTO COMPLETE
@@ -576,3 +579,9 @@ selects backward.)"
     (mark-word arg allow-extend)))
 
 (global-set-key [remap mark-word] 'mark-whole-word)
+
+;;
+;;  Org-mode store link
+;;
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
