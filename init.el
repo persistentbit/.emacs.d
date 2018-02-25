@@ -1,28 +1,153 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+;;
+;; PACKAGE MANAGEMENT
+;;
+(require 'package)
+
+(defvar gnu '("gnu" . "https://elpa.gnu.org/packages/"))
+(defvar melpa '("melpa" . "https://melpa.org/packages/"))
+(defvar melpa-stable '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
+;; Add marmalade to package repos
+(setq package-archives nil)
+(add-to-list 'package-archives melpa-stable t)
+(add-to-list 'package-archives melpa t)
+(add-to-list 'package-archives gnu t)
+
 (package-initialize)
 
+(unless (and (file-exists-p "~/.emacs.d/elpa/archives/gnu")
+             (file-exists-p "~/.emacs.d/elpa/archives/melpa")
+             (file-exists-p "~/.emacs.d/elpa/archives/melpa-stable"))
+  (package-refresh-contents))
 
-  (require 'package)
+(defun packages-install (&rest packages)
+  (message "running packages-install")
+  (mapc (lambda (package)
+          (let ((name (car package))
+                (repo (cdr package)))
+            (when (not (package-installed-p name))
+              (let ((package-archives (list repo)))
+                (package-initialize)
+                (package-install name)))))
+        packages)
+  (package-initialize)
+  (delete-other-windows))
 
-(add-to-list
-   'package-archives
-   '("melpa" . "http://melpa.milkbox.net/packages/")
-   t)
-;;(add-to-list
-;;   'package-archives
-;;   '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
-;;   t)
+;; Install extensions if they're missing
+(defun init--install-packages ()
+  (message "Lets install some packages")
+  (packages-install
+   ;; Since use-package this is the only entry here
+   ;; ALWAYS try to use use-package!
+   (cons 'use-package melpa)
+   ))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(condition-case nil
+    (init--install-packages)
+  (error
+   (package-refresh-contents)
+   (init--install-packages)))
 
-(eval-when-compile
-  (require 'use-package))
-;;(require 'diminish)
+
+;;
+;;  BOOKMARKS
+;;
+(use-package bm
+  :ensure t
+  :bind (("C-c =" . bm-toggle)
+         ("C-c [" . bm-previous)
+         ("C-c ]" . bm-next)))
+(use-package counsel :ensure t)
+
+(use-package swiper
+  :ensure t
+  :bind*
+  (("C-s" . swiper)
+   ("C-c C-r" . ivy-resume)
+   ("M-a" . counsel-M-x)
+   ("C-x C-f" . counsel-find-file)
+   ("C-c h f" . counsel-describe-function)
+   ("C-c h v" . counsel-describe-variable)
+   ("C-c i u" . counsel-unicode-char)
+   ("M-i" . counsel-imenu)
+   ("C-c g" . counsel-git)
+   ("C-c j" . counsel-git-grep)
+   ("C-c k" . counsel-ag)
+   ("C-c l" . scounsel-locate))
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (define-key read-expression-map (kbd "C-r") #'counsel-expression-history)
+    (ivy-set-actions
+     'counsel-find-file
+     '(("d" (lambda (x) (delete-file (expand-file-name x)))
+        "delete"
+        )))
+    (ivy-set-actions
+     'ivy-switch-buffer
+     '(("k"
+        (lambda (x)
+          (kill-buffer x)
+          (ivy--reset-state ivy-last))
+        "kill")
+       ("j"
+        ivy--switch-buffer-other-window-action
+        "other window")))))
+
+
+;;
+;; ENVIRONMENT
+;;
+
+(if (or
+     (eq system-type 'darwin)
+     (eq system-type 'berkeley-unix))
+    (setq system-name (car (split-string system-name "\\."))))
+
+(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+(push "/usr/local/bin" exec-path)
+
+;; /usr/libexec/java_home
+;;(setenv "JAVA_HOME" "/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home")
+
+
+;;
+;;  IVY MODE
+;;
+(use-package ivy
+  :ensure t
+  :diminish ivy-mode
+  :config
+  (defun couns-git ()
+    "Find file in the current Git repository."
+    (interactive)
+    (let* ((default-directory (locate-dominating-file
+                               default-directory ".git"))
+           (cands (split-string
+                   (shell-command-to-string
+                    "git ls-files --full-name --")
+                   "\n"))
+           (file (ivy-read "Find file: " cands)))
+      (when file
+        (find-file file))))
+  :bind ("M-o" . couns-git)
+  )
+
+(use-package swiper
+  :ensure t)
+
+(use-package counsel
+  :ensure t)
+
+
+
+
+
+
+
+
+
 (require 'bind-key)
 
 (custom-set-variables
@@ -35,7 +160,7 @@
     ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
  '(package-selected-packages
    (quote
-    (cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
+    (ace-jump-mode emmet-mode less-css-mode web-mode clj-refactor rainbow-delimiters highlight-parentheses paredit-everywhere paredit cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -55,6 +180,10 @@
 
 ;; Load the monokai theme
 (load-theme 'monokai t)
+
+;;
+(global-prettify-symbols-mode 1)
+
 
 
 ;; Turn on Text Mode and auto-fill mode automatically
@@ -125,6 +254,15 @@ This command switches to browser."
      ;;more info at https://github.com/abo-abo/ace-window
     )
   )
+
+(use-package ace-jump-mode
+  :ensure t
+  :config
+  (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
+
+
+
+;;  frames
 (setq default-frame-alist
       '(
         (width . 80) (height . 53)
@@ -289,11 +427,123 @@ This command switches to browser."
 ;;  :init(add-hook 'lisp-mode-hook(lambda () (slime-mode t)))
 ;;  )
 
+;;
+;;  AUTO COMPLETE
+;;
+(use-package company
+  :ensure t
+  :bind (("C-c /". company-complete))
+  :config
+  (global-company-mode)
+  )
+
+
+;;
+;; Set up paredit
+;;
+(use-package paredit
+  :ensure t
+  :diminish paredit-mode
+  :config
+  (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+  )
+
+;; Ensure paredit is used EVERYWHERE!
+(use-package paredit-everywhere
+  :ensure t
+  :diminish paredit-everywhere-mode
+  :config
+  (add-hook 'prog-mode-hook #'paredit-everywhere-mode))
+
+(use-package highlight-parentheses
+  :ensure t
+  :diminish highlight-parentheses-mode
+  :config
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda()
+              (highlight-parentheses-mode)
+              )))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'lisp-mode-hook
+            (lambda()
+              (rainbow-delimiters-mode)
+              )))
+
+(global-highlight-parentheses-mode)
+
+
 
 ;; set up closure
 ;;
+(use-package cider
+  :ensure t
+  :pin melpa-stable
 
-(unless (package-installed-p 'cider)
-  (package-refresh-contents)
-  (package-install 'cider))
+  :config
+  (add-hook 'cider-repl-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'eldoc-mode)
+  (add-hook 'cider-mode-hook #'cider-hydra-mode)
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  (setq cider-repl-use-pretty-printing t)
+  (setq cider-repl-display-help-banner nil)
+  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
+  :bind (("M-r" . cider-namespace-refresh)
+         ("C-c r" . cider-repl-reset)
+         ("C-c ." . cider-reset-test-run-tests))
+  )
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook (lambda ()
+                                 (clj-refactor-mode 1)
+                                 ;; insert keybinding setup here
+                                 ))
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-warn-on-evaql nil)
+  :bind ("C-c '" . hydra-cljr-help-menu/body)
+)
+
+;;
+;;   WEB Editing
+;;
+
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.xhtml?\\'" . web-mode))
+
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2))
+
+  (add-hook 'web-mode-hook  'my-web-mode-hook))
+
+(use-package less-css-mode
+  :ensure t)
+
+(use-package emmet-mode
+  :ensure t)
+
+;;
+;;  C-k kills and put in buffer
+;;
+(setq kill-whole-line t)
