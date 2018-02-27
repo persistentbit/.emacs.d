@@ -592,4 +592,3 @@ selects backward.)"
 ;; register much used files
 ;; Jump to init.el with C-x r j e
 (set-register ?e '(file . "~/.emacs.d/init.el"))
-(set-register ?d '(file . "~/mydocs/index.org"))
