@@ -160,7 +160,7 @@
     ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
  '(package-selected-packages
    (quote
-    (ace-jump-mode emmet-mode less-css-mode web-mode clj-refactor rainbow-delimiters highlight-parentheses paredit-everywhere paredit cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
+    (company ace-jump-mode emmet-mode less-css-mode web-mode clj-refactor rainbow-delimiters highlight-parentheses paredit-everywhere paredit cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -585,3 +585,10 @@ selects backward.)"
 ;;
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c C-l") 'org-insert-link)
+
+;; save the desktop
+(desktop-save-mode 1)
+
+;; register much used files
+;; Jump to init.el with C-x r j e
+(set-register ?e '(file . "~/.emacs.d/init.el"))
