@@ -4,3 +4,7 @@ SessionDesktop.el
 elpa/
 recentf
 eshell/
+.emacs.desktop
+places
+projectile*
+recentf~

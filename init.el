@@ -160,7 +160,7 @@
     ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
  '(package-selected-packages
    (quote
-    (company ace-jump-mode emmet-mode less-css-mode web-mode clj-refactor rainbow-delimiters highlight-parentheses paredit-everywhere paredit cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme projectile use-package magit)))
+    (helm-projectile fzf company ace-jump-mode emmet-mode less-css-mode web-mode clj-refactor rainbow-delimiters highlight-parentheses paredit-everywhere paredit cider slime macrostep elisp-slime-nav org-bullets which-key ace-window dracula-theme use-package magit)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -176,10 +176,10 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 ;; Load the zenburn theme
-;; (load-theme 'zenburn t)
+ (load-theme 'zenburn t)
 
 ;; Load the monokai theme
-(load-theme 'monokai t)
+;;(load-theme 'monokai t)
 
 ;;
 (global-prettify-symbols-mode 1)
@@ -225,9 +225,17 @@ This command switches to browser."
 ;;
 ;; Projectile settings
 ;;
-(setq projectile-indexing-method 'native)
-(setq projectile-enable-caching t)
+(use-package projectile
+  :delight '(:eval (concat " " (projectile-project-name)))
+  :custom
+  (projectile-enable-caching t)
+  (projectile-completion-system 'ivy)
+  (projectile-indexing-method 'alien "Disable native indexing on Windows.")
+  :config (projectile-mode))
 
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))                                                                                                                                                                                         
+                                           
 ;;
 ;; reformat xml
 ;;
@@ -593,3 +601,30 @@ selects backward.)"
 ;; Jump to init.el with C-x r j e
 (set-register ?e '(file . "~/.emacs.d/init.el"))
 (set-register ?d '(file . "~/mydocs/index.org"))
+
+;;
+;;  install package f : api for working with files
+;;
+
+;;
+;;(require 'f)
+(use-package f)
+
+;;
+;; org-mode create a table of content
+;;
+(defun org-toc ()
+  (interactive)
+  (let ((headings (delq nil (loop for f in (f-entries "." (lambda (f) (f-ext? f "org")) t)
+                  append
+                  (with-current-buffer (find-file-noselect f)
+                    (org-map-entries
+                     (lambda ()
+                       (when (> 2 (car (org-heading-components)))
+                     (cons f (nth 4 (org-heading-components)))))))))))
+    (switch-to-buffer (get-buffer-create "*toc*"))
+    (erase-buffer)
+    (org-mode)
+    (loop for (file . heading) in headings 
+      do
+      (insert (format "* [[%s::*%s]]\n" file heading)))))
