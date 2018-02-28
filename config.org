@@ -329,6 +329,7 @@ match the same one on macOS.
 http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/
 
 #+BEGIN_SRC emacs-lisp
+(when (string-equal system-type "darwin")
 (let* ((cmd "sw_vers -productVersion")
        (macos-version (string-to-int
                      (cadr (split-string
@@ -340,7 +341,7 @@ http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-cap
     (setq ring-bell-function 'ignore)
 
     ;; El Capitan full screen animation is quick and delightful (enough to start using it).
-    (setq ns-use-native-fullscreen t)))
+    (setq ns-use-native-fullscreen t))))
 #+END_SRC
 
 * List buffers
