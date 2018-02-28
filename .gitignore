@@ -9,3 +9,6 @@ places
 projectile*
 recentf~
 bookmarks
+config.el
+custom.el
+.emacs.desktop.lock
