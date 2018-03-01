@@ -1435,13 +1435,13 @@ Convenience bindings to use doc-view with the arrow keys.
 #+end_src
 * Games
 ** Tetris
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package tetris
   :ensure t)
 #+END_SRC
 ** Text Adventure game
-#+BEGIN_SRC emacs-lisp
-(use package dunnet
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package dunnet 
      :ensure t
      )
 #+END_SRC
