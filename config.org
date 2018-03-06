@@ -111,7 +111,6 @@ Here's some configuration for [[https://github.com/bbatsov/solarized-emacs/][bba
     (load-theme 'wombat t)
 #+end_src
 
-
 * Font
 
 [[http://adobe-fonts.github.io/source-code-pro/][Source Code Pro]] is a nice monospaced font.
@@ -131,7 +130,8 @@ And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
-             '(font . "Source Code Pro-14"))
+             '(font . "PragmataPro-14"))
+(set-frame-font "PragmataPro-14")
 #+end_src
 
 Note: To view all fonts that are available to use, run the following:
@@ -181,6 +181,9 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 
 ;; Turn on the blinking cursor
 (blink-cursor-mode 1)
+;;(setq-default cursor-type '(bar . 2))
+;;(set-cursor-color "#ffffff")
+(global-hl-line-mode 1)
 
 ;;(setq-default indent-tabs-mode nil)
 (setq-default indicate-empty-lines t)
@@ -375,6 +378,14 @@ source: [[http://whattheemacsd.com/sane-defaults.el-01.html][Magnars Sveen]]
   (recentf-mode t)
   (setq recentf-max-saved-items 200))
 #+end_src
+
+* Which-Key
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :delight
+  :config (which-key-mode))
+#+END_SRC
 
 * Org mode
 
@@ -583,6 +594,14 @@ do just that to reduce the repetition.
 (bind-key "C-x 3" 'hsplit-other-window)
 #+end_src
 
+Use Ace window to jump between windows
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure    ace-window
+  :bind      ("M-o" . ace-window))
+#+END_SRC
+
+
 ** Winner mode
 
 Winner mode allows you to undo/redo changes to window changes in Emacs
@@ -604,6 +623,20 @@ and allows you.
   :bind ("H-t" . transpose-frame))
 #+end_src
 
+* NeoTree
+#+BEGIN_SRC emacs-lisp
+(use-package neotree
+  :bind ("s-d" . neotree)
+  :config
+  (setq neo-dont-be-alone t
+        neo-theme 'nerd)
+  (bind-keys :map neotree-mode-map
+             ("u" . neotree-select-up-node)
+             ;;("d" . *-neo-down-and-next)
+             ("i" . neotree-enter)
+             ("K" . neotree-delete-node)))
+(global-set-key [f8] 'neotree-toggle)
+#+END_SRC
 * Ido
 
 #+begin_src emacs-lisp
@@ -703,9 +736,14 @@ This package displays function signatures in the mode line.
         cider-repl-display-in-current-window t
         cider-repl-use-clojure-font-lock t    
         cider-prompt-save-file-on-load 'always-save
+        cider-save-file-on-load t
         cider-font-lock-dynamically '(macro core function var)
         nrepl-hide-special-buffers t            
-        cider-overlays-use-font-lock t)         
+        cider-overlays-use-font-lock t)
+(setq cider-cljs-lein-repl
+      "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel!)
+           (figwheel-sidecar.repl-api/cljs-repl))")         
   (cider-repl-toggle-pretty-printing))
 #+END_SRC
 ** Clojure
@@ -714,6 +752,7 @@ This package displays function signatures in the mode line.
 (use-package clojure-mode
   :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.cljs\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode))
   :init
   (add-hook 'clojure-mode-hook #'yas-minor-mode)         
@@ -731,24 +770,21 @@ This package displays function signatures in the mode line.
   :defer t
   :ensure t
   :diminish clj-refactor-mode
-  :config (cljr-add-keybindings-with-prefix "C-c C-m"))
+  :config (cljr-add-keybindings-with-prefix "C-c C-m")
+  (bind-key "M-[" #'paredit-wrap-square clojure-mode-map)
+  (bind-key "M-{" #'paredit-wrap-curly clojure-mode-map))
 
-(use-package smartparens
-  :defer t
-  :ensure t
-  :diminish smartparens-mode
+
+(use-package paredit
+  :diminish paredit-mode
   :init
-;;  (setq sp-override-key-bindings
-;;        '(("C-<right>" . nil)
-;;          ("C-<left>" . nil)
-;;          ("C-)" . sp-forward-slurp-sexp)
-;;          ("M-<backspace>" . nil)
-;;          ("C-(" . sp-forward-barf-sexp)))
-  :config
-  (use-package smartparens-config)
-  (sp-use-smartparens-bindings)
-  (sp--update-override-key-bindings)
-  :commands (smartparens-mode show-smartparens-mode))
+  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+  (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+  (add-hook 'json-mode-hook 'enable-paredit-mode))
 
 #+end_src
 
@@ -1364,7 +1400,6 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (add-hook 'java-mode-hook 'my-c-mode-hook)
 #+end_src
 
-
 ** Rust
 
 #+BEGIN_SRC emacs-lisp
@@ -1434,5 +1469,17 @@ Convenience bindings to use doc-view with the arrow keys.
 
 #+begin_src emacs-lisp
 #+end_src
+* Games
+** Tetris
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package tetris
+  :ensure t)
+#+END_SRC
+** Text Adventure game
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package dunnet 
+     :ensure t
+     )
+#+END_SRC-
 * Temp
   Just some temp settings
