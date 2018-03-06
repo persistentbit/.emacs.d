@@ -472,6 +472,7 @@ good column number to do that.
    (scheme . t)
    (shell . t)
    (sqlite . t)
+   (clojure . t)
    (js . t)))
 
 (defun my-org-confirm-babel-evaluate (lang body)

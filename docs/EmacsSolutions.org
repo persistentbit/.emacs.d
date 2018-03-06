@@ -1,0 +1,19 @@
+* Problems and solutions
+** Evaluation of source code blocks gives 'Evaluation of this ... code block is disabled.'
+We need to remove the compiled lisp code for some plugins
+
+Let's see what we have:
+#+BEGIN_SRC shell :result output
+ls -d ~/.emacs.d/elpa/org-*
+#+END_SRC
+
+#+RESULTS:
+| /Users/petermuys/.emacs.d/elpa/org-bullets-20171127.526  |
+| /Users/petermuys/.emacs.d/elpa/org-plus-contrib-20180226 |
+
+Remove the compiled code for org-plus-contrib....
+#+BEGIN_SRC shell :result output
+rm ~/.emacs.d/elpa/org-plus-contrib-20180226/*.elc
+#+END_SRC
+
+Next, Restart emacs
