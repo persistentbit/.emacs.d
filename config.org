@@ -183,7 +183,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 (blink-cursor-mode 1)
 ;;(setq-default cursor-type '(bar . 2))
 ;;(set-cursor-color "#ffffff")
-(global-hl-line-mode 1)
+(global-hl-line-mode 0)
 
 ;;(setq-default indent-tabs-mode nil)
 (setq-default indicate-empty-lines t)
@@ -748,6 +748,8 @@ This package displays function signatures in the mode line.
 #+END_SRC
 ** Clojure
 
+(use-package rainbow)
+
 #+begin_src emacs-lisp
 (use-package clojure-mode
   :ensure t
@@ -760,8 +762,8 @@ This package displays function signatures in the mode line.
   (add-hook 'clojure-mode-hook #'subword-mode)           
   (add-hook 'clojure-mode-hook #'smartparens-mode)       
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'clojure-mode-hook #'eldoc-mode)             
-  (add-hook 'clojure-mode-hook #'idle-highlight-mode))
+  (add-hook 'clojure-mode-hook #'eldoc-mode))
+  ;;(add-hook 'clojure-mode-hook #'idle-highlight-mode)
 
 (use-package cider-eval-sexp-fu
   :defer t)
@@ -775,17 +777,35 @@ This package displays function signatures in the mode line.
   (bind-key "M-{" #'paredit-wrap-curly clojure-mode-map))
 
 
-(use-package paredit
-  :diminish paredit-mode
+;; (use-package paredit
+;;   :diminish paredit-mode
+;;   :init
+;;   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'json-mode-hook 'enable-paredit-mode))
+(use-package parinfer
+  :ensure t
+  :bind
+  (("C-," . parinfer-toggle-mode))
   :init
-  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook 'enable-paredit-mode)
-  (add-hook 'json-mode-hook 'enable-paredit-mode))
-
+  (progn
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+            pretty-parens  ; different paren styles for different modes.
+            ;;evil           ; If you use Evil.
+            ;;lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+;;            paredit                 ; Introduce some paredit commands.
+            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+            smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'clojure-mode-hook #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook #'parinfer-mode)
+    (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+end_src
 
 ** Dash
@@ -867,6 +887,29 @@ No more juggling windows after commiting. It's magit bliss.
   (kill-buffer)
   (jump-to-register :magit-fullscreen))
 #+end_src
+
+*** Git-Gutter
+Show the changed lines in the buffer
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter-fringe+ :ensure t :defer 3
+    :config
+  ;; (setq git-gutter-fr+-side 'right-fringe)
+  ;; (defun theme-git-gutter (&rest args) "Set the background colour of the git-gutter faces"
+  ;;   (set-face-attribute 'git-gutter-fr+-added nil :foreground (face-foreground 'success) :background (face-foreground 'success))
+  ;;   (set-face-attribute 'git-gutter-fr+-deleted nil :foreground (face-foreground 'error) :background (face-foreground 'error))
+  ;;   (set-face-attribute 'git-gutter-fr+-modified nil :foreground (face-foreground 'warning) :background (face-foreground 'warning)))
+  ;; (theme-git-gutter)
+  ;; (advice-add 'load-theme :after 'theme-git-gutter)
+
+  (global-git-gutter+-mode)
+
+  :bind (:map git-gutter+-mode-map
+              ("C-x v p" . git-gutter+-previous-hunk)
+              ("C-x v s" . git-gutter+-show-hunk)
+              ("C-x v n" . git-gutter+-next-hunk)))
+
+
+#+END_SRC
 
 ** Edit With Emacs
 
@@ -1281,8 +1324,9 @@ while still being in org mode.
 #+end_src
 
 ** Virtualenvwrapper
-
+Used for Python
 #+BEGIN_SRC emacs-lisp
+
 (use-package virtualenvwrapper
   :ensure t
   :defer t
