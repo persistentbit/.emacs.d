@@ -748,9 +748,13 @@ This package displays function signatures in the mode line.
 #+END_SRC
 ** Clojure
 
-(use-package rainbow)
+
 
 #+begin_src emacs-lisp
+(use-package rainbow-delimiters
+ :ensure t
+)
+
 (use-package clojure-mode
   :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
@@ -790,7 +794,14 @@ This package displays function signatures in the mode line.
 (use-package parinfer
   :ensure t
   :bind
-  (("C-," . parinfer-toggle-mode))
+;  (("C-," . parinfer-toggle-mode))
+    (:map parinfer-mode-map
+      ("<tab>" . parinfer-smart-tab:dwim-right)
+      ("S-<tab>" . parinfer-smart-tab:dwim-left)
+      ("C-," . parinfer-toggle-mode)
+    :map parinfer-region-mode-map
+      ("<tab>" . parinfer-smart-tab:dwim-right)
+      ("S-<tab>" . parinfer-smart-tab:dwim-left))
   :init
   (progn
     (setq parinfer-extensions
