@@ -13,3 +13,4 @@ config.el
 custom.el
 .emacs.desktop.lock
 games/
+/ido.last
