@@ -11,6 +11,15 @@ a fantastic way to manage package configurations.
       user-mail-address "peter@petermuys.com")
 #+end_src
 
+* Waka time
+#+BEGIN_SRC emacs-lisp
+(use-package wakatime-mode
+  :ensure t
+)
+(setq  wakatime-api-key "8736cb69-ba43-482e-b3d8-5f8a778e43b2")
+(setq wakatime-cli-path "/usr/local/bin/wakatime")
+(global-wakatime-mode)
+#+END_SRC
 * Customize settings
 
 Set up the customize file to its own separate file, instead of saving
@@ -24,6 +33,7 @@ customize settings in [[file:init.el][init.el]].
 ** Save Desktop active
 #+BEGIN_SRC emacs-lisp
 (desktop-save-mode 1)
+(add-to-list 'desktop-globals-to-save 'register-alist)
 #+END_SRC
 
 * Theme
@@ -754,6 +764,15 @@ This package displays function signatures in the mode line.
 (use-package rainbow-delimiters
  :ensure t
 )
+
+(use-package highlight-indent-guides
+  :ensure t
+  :config
+  (setq highlight-indent-guides-method 'character)
+  ;; Indent character samples: | ┆ ┊
+  (setq highlight-indent-guides-character ?\┆)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+
 
 (use-package clojure-mode
   :ensure t
