@@ -11,6 +11,12 @@ a fantastic way to manage package configurations.
       user-mail-address "peter@petermuys.com")
 #+end_src
 
+* Bookmarks on Startup
+#+BEGIN_SRC emacs-lisp
+(require 'bookmark)
+(bookmark-bmenu-list)
+(switch-to-buffer "*Bookmark List*")
+#+END_SRC
 * Waka time
 #+BEGIN_SRC emacs-lisp
 (use-package wakatime-mode
