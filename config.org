@@ -10,13 +10,6 @@ a fantastic way to manage package configurations.
 (setq user-full-name "Peter Muys"
       user-mail-address "peter@petermuys.com")
 #+end_src
-
-* Bookmarks on Startup
-#+BEGIN_SRC emacs-lisp
-(require 'bookmark)
-(bookmark-bmenu-list)
-(switch-to-buffer "*Bookmark List*")
-#+END_SRC
 * Waka time
 #+BEGIN_SRC emacs-lisp
 (use-package wakatime-mode
@@ -1561,5 +1554,12 @@ Convenience bindings to use doc-view with the arrow keys.
      :ensure t
      )
 #+END_SRC-
+
+* Global key bindings
+#+BEGIN_SRC emacs-lisp
+(require 'bookmark)
+(global-set-key (kbd "<f2>") 'bookmark-jump)
+(global-set-key (kbd "C-<f2>") 'bookmark-bmenu-list)
+#+END_SRC
 * Temp
   Just some temp settings
