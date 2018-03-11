@@ -467,6 +467,12 @@ speed keys in Org mode]].
 (setq org-highlight-latex-and-related '(latex script entities))
 #+END_SRC
 
+Indent mode by default...
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-indented t)
+#+END_SRC
+
+
 ** Org tags
 
 The default value is -77, which is weird for smaller width windows.
