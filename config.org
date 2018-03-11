@@ -376,6 +376,11 @@ source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 (setq auto-revert-verbose nil)
 #+end_src
 
+#+BEGIN_SRC emacs-lisp
+;;Auto revert files: changed files are auto reloaded...
+(global-auto-revert-mode t)
+#+END_SRC
+
 source: [[http://whattheemacsd.com/sane-defaults.el-01.html][Magnars Sveen]]
 
 * Recentf
