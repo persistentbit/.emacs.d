@@ -19,6 +19,21 @@ a fantastic way to manage package configurations.
 (setq wakatime-cli-path "/usr/local/bin/wakatime")
 (global-wakatime-mode)
 #+END_SRC
+* Switch to previous buffer
+based on http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/
+#+BEGIN_SRC emacs-lisp
+;; (defun switch-to-previous-buffer ()
+;;   "Switch to previously open buffer.
+;;    Repeated invocations toggle between the two most recently open buffers."
+;;   (interactive)
+;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+;;Binding...
+;;(key-chord-define-global "JJ" 'switch-to-previous-buffer)
+;;Or global key...
+(global-set-key (kbd "<f3>") 'switch-to-prev-buffer)
+(global-set-key (kbd "<f4>") 'switch-to-next-buffer)
+#+END_SRC
 * Customize settings
 
 Set up the customize file to its own separate file, instead of saving
@@ -442,15 +457,21 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/Dropbox/Agenda"))))
+                    '("~/v4/agenda"))))
 #+end_src
 
 *** Org capture
 
 #+begin_src emacs-lisp
 (bind-key "C-c c" 'org-capture)
-(setq org-default-notes-file "~/Dropbox/Notes/notes.org")
+(setq org-default-notes-file "~/v4/notes.org")
 #+end_src
+
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      '(("t" "todo" entry (file+headline "~/v4/todo.org" "Tasks")
+         "* TODO [#A] %?")))
+#+END_SRC
 
 ** Org setup
 
