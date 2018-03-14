@@ -11,7 +11,7 @@ a fantastic way to manage package configurations.
       user-mail-address "peter@petermuys.com")
 #+end_src
 * Waka time
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package wakatime-mode
   :ensure t
 )
@@ -19,76 +19,20 @@ a fantastic way to manage package configurations.
 (setq wakatime-cli-path "/usr/local/bin/wakatime")
 (global-wakatime-mode)
 #+END_SRC
-* Company
-Code Completion plugin
-#+BEGIN_SRC emacs-lisp :tangle no
-;; Completion ignores filenames ending in any string in this list.
-(setq completion-ignored-extensions
-      '(".o" ".elc" "~" ".bin" ".class" ".exe" ".ps" ".abs" ".mx"
-        ".~jv" ".rbc" ".pyc" ".beam" ".aux" ".out" ".pdf" ".hbc"))
+* Switch to previous buffer
+based on http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/
+#+BEGIN_SRC emacs-lisp
+;; (defun switch-to-previous-buffer ()
+;;   "Switch to previously open buffer.
+;;    Repeated invocations toggle between the two most recently open buffers."
+;;   (interactive)
+;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(use-package company
-  :ensure t
-  :pin melpa
-  :diminish ""
-  :init
-  ;; (add-hook 'prog-mode-hook 'company-mode)
-  ;; (add-hook 'comint-mode-hook 'company-mode)
-  :config
-  (global-company-mode)
-  (setq company-tooltip-limit 10)
-  (setq company-idle-delay 0.2)
-  (setq company-echo-delay 0)
-  (setq company-minimum-prefix-length 3)
-  (setq company-require-match nil)
-  (setq company-selection-wrap-around t)
-  (setq company-tooltip-align-annotations t)
-  (setq company-tooltip-flip-when-above t)
-  (setq company-transformers '(company-sort-by-occurrence)) ; weight by frequency
-  (define-key company-active-map (kbd "M-n") nil)
-  (define-key company-active-map (kbd "M-p") nil)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
-  (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-  (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
-  (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
-
-  ;; Quick-help (popup documentation for suggestions).
-  ;; (use-package company-quickhelp
-  ;;   :if window-system
-  ;;   :init (company-quickhelp-mode 1))
-  ;; Company settings.
-
-  ;; =======================
-  ;; Adding company backends
-  ;; =======================
-
-  ;; Python auto completion
-  (use-package company-jedi
-    :ensure t
-    :init
-    (setq company-jedi-python-bin "python2")
-    :config
-    (add-to-list 'company-backends 'company-jedi))
-
-  ;; HTML completion
-  (use-package company-web
-    :ensure t
-    :bind (("C-c w" . company-web-html))
-    :config
-    (add-to-list 'company-backends 'company-web-html))
-
-  (use-package company-statistics
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'company-statistics-mode))
-
-  ;; (use-package company-ansible
-  ;;   :defer t
-  ;;   :config
-  ;;   (add-to-list 'company-backends 'company-ansible))
-  )
+;;Binding...
+;;(key-chord-define-global "JJ" 'switch-to-previous-buffer)
+;;Or global key...
+(global-set-key (kbd "<f3>") 'switch-to-prev-buffer)
+(global-set-key (kbd "<f4>") 'switch-to-next-buffer)
 #+END_SRC
 * Customize settings
 
@@ -156,14 +100,22 @@ Here's some configuration for [[https://github.com/bbatsov/solarized-emacs/][bba
 
 ** Waher theme
 
-#+begin_src emacs-lisp :tangle no
+#+nbegin_src emacs-lisp :tangle no
 (use-package waher-theme
   if (window-system)
   :ensure t
   :init
-  (load-theme 'waher))
+ ; (load-theme 'waher))
 #+end_src
 
+** Zenburn theme
+#+BEGIN_SRC emacs-lisp
+(use-package zenburn-theme
+ :ensure t
+ :init
+;(load-theme 'zenburn)
+)
+#+END_SRC
 ** Convenient theme functions
 
 #+begin_src emacs-lisp
@@ -513,15 +465,21 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/Dropbox/Agenda"))))
+                    '("~/v4/agenda"))))
 #+end_src
 
 *** Org capture
 
 #+begin_src emacs-lisp
 (bind-key "C-c c" 'org-capture)
-(setq org-default-notes-file "~/Dropbox/Notes/notes.org")
+(setq org-default-notes-file "~/v4/notes.org")
 #+end_src
+
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      '(("t" "todo" entry (file+headline "~/v4/todo.org" "Tasks")
+         "* TODO [#A] %?")))
+#+END_SRC
 
 ** Org setup
 
