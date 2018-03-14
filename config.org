@@ -11,7 +11,7 @@ a fantastic way to manage package configurations.
       user-mail-address "peter@petermuys.com")
 #+end_src
 * Waka time
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package wakatime-mode
   :ensure t
 )
@@ -100,12 +100,12 @@ Here's some configuration for [[https://github.com/bbatsov/solarized-emacs/][bba
 
 ** Waher theme
 
-#+begin_src emacs-lisp :tangle no
+#+nbegin_src emacs-lisp :tangle no
 (use-package waher-theme
   if (window-system)
   :ensure t
   :init
-  (load-theme 'waher))
+ ; (load-theme 'waher))
 #+end_src
 
 ** Convenient theme functions
