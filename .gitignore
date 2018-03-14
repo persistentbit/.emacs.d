@@ -16,3 +16,5 @@ games/
 /ido.last
 network-security.data
 /backups/!home!je22688!.emacs.d!custom.el~
+/ac-comphist.dat
+/company-statistics-cache.el
