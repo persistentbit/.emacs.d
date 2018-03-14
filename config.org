@@ -108,6 +108,14 @@ Here's some configuration for [[https://github.com/bbatsov/solarized-emacs/][bba
  ; (load-theme 'waher))
 #+end_src
 
+** Zenburn theme
+#+BEGIN_SRC emacs-lisp
+(use-package zenburn-theme
+ :ensure t
+ :init
+;(load-theme 'zenburn)
+)
+#+END_SRC
 ** Convenient theme functions
 
 #+begin_src emacs-lisp
