@@ -20,6 +20,16 @@ a fantastic way to manage package configurations.
   (setq wakatime-cli-path "/usr/local/bin/wakatime")
   (global-wakatime-mode))
 #+END_SRC
+* Kill-other-buffers
+The kill-other-buffers will kill all buffers without a file name or dired buffers
+#+BEGIN_SRC emacs-lisp
+(defun kill-other-buffers () 
+  "Kill all other buffers." 
+  (interactive) 
+   (mapc 'kill-buffer 
+         (delq (current-buffer) 
+               (remove-if-not '(lambda (x) (or (buffer-file-name x) (eq 'dired-mode (buffer-local-value 'major-mode x)))) (buffer-list)))))
+#+END_SRC
 * Switch to previous buffer
 based on http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/
 #+BEGIN_SRC emacs-lisp
@@ -450,6 +460,13 @@ On Org mode version 9 I wasn't able to execute source blocks out of the box. [[h
 rm ${ORG_DIR}/*.elc
 #+END_SRC
 
+Setting The default org-mode files....
+#+BEGIN_SRC emacs-lisp
+(setq my-org-dir "~/ownCloud/org")
+(setq org-default-notes-file (concat my-org-dir "/notes.org"))
+
+#+END_SRC
+
 ** Org activation bindings
 
 Set up some global key bindings that integrate with Org Mode features.
@@ -468,7 +485,7 @@ Here you can define the default task list...
 ;;("@work" . ?w) ("@home" . ?h) ("laptop" . ?l)))
 #+END_SRC
 
-** Org agenda
+** Org agenda                                                        :fixme:
 
 Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]].
 
@@ -476,19 +493,18 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/v4/agenda"))))
+                    '("~/ownCloud/agenda"))))
 #+end_src
 
 ** Org capture
 
 #+begin_src emacs-lisp
 (bind-key "C-c c" 'org-capture)
-(setq org-default-notes-file "~/v4/notes.org")
 #+end_src
 
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
-      '(("t" "todo" entry (file+headline "~/v4/todo.org" "Tasks")
+      '(("t" "todo" entry (file+headline (concat my-org-dir "/todo.org") "Tasks")
          "* TODO [#A] %?")))
 #+END_SRC
 
