@@ -647,8 +647,8 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
       '(("~/ownCloud/org/gtd.org" :maxlevel . 1)
         ("~/ownCloud/org/notes.org" :maxlevel . 2)
         ("~/ownCloud/org/journal.org" :maxlevel . 2)
-        ("/ownCloud/org/how.org" :maxlevel .2)
-        ("/ownCloud/org/docs.org" :maxlevel .2)
+        ("/ownCloud/org/how.org" :maxlevel . 2)
+        ("/ownCloud/org/docs.org" :maxlevel . 2)
         ("~/ownCloud/done.org" :maxlevel . 2)))
 #+END_SRC
 * Tramp
