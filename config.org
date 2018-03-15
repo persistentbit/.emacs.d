@@ -12,12 +12,13 @@ a fantastic way to manage package configurations.
 #+end_src
 * Waka time
 #+BEGIN_SRC emacs-lisp :tangle no
-(use-package wakatime-mode
-  :ensure t
-)
-(setq  wakatime-api-key "8736cb69-ba43-482e-b3d8-5f8a778e43b2")
-(setq wakatime-cli-path "/usr/local/bin/wakatime")
-(global-wakatime-mode)
+(when (or (string= system-name "Gonzo.local") (string= system-name "Bigbird.local"))
+  (use-package wakatime-mode
+    :ensure t
+  )
+  (setq  wakatime-api-key "8736cb69-ba43-482e-b3d8-5f8a778e43b2")
+  (setq wakatime-cli-path "/usr/local/bin/wakatime")
+  (global-wakatime-mode))
 #+END_SRC
 * Switch to previous buffer
 based on http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/
@@ -455,6 +456,7 @@ Set up some global key bindings that integrate with Org Mode features.
 (bind-key "C-c l" 'org-store-link)
 (bind-key "C-c c" 'org-capture)
 (bind-key "C-c a" 'org-agenda)
+(bind-key "C-c C-<return>" 'org-toggle-heading)
 #+end_src
 
 *** Org agenda
