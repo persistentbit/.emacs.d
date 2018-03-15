@@ -10,6 +10,11 @@ a fantastic way to manage package configurations.
 (setq user-full-name "Peter Muys"
       user-mail-address "peter@petermuys.com")
 #+end_src
+
+* Server Start
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
 * Waka time
 #+BEGIN_SRC emacs-lisp :tangle no
 (when (or (string= system-name "Gonzo.local") (string= system-name "Bigbird.local"))
