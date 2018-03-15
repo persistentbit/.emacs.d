@@ -642,20 +642,6 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 
 * Getting-Things-Done
 #+BEGIN_SRC emacs-lisp
-(defun gtd ()
-   (interactive)
-   (find-file (concat my-org-dir "/gtd.org")))
-(defun journal ()
-   (interactive)
-   (find-file (concat my-org-dir "/journal.org")))
-(defun notes ()
-   (interactive)
-   (find-file (concat my-org-dir "/notes.org")))
-(defun qa ()
-  (interactive)
-  (find-file (concat my-org-dir "/qa.org")))
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
 (setq org-refile-targets
       '(("~/ownCloud/org/gtd.org" :maxlevel . 1)
         ("~/ownCloud/org/notes.org" :maxlevel . 2)
@@ -1668,6 +1654,27 @@ Convenience bindings to use doc-view with the arrow keys.
 (require 'bookmark)
 (global-set-key (kbd "<f2>") 'bookmark-jump)
 (global-set-key (kbd "C-<f2>") 'bookmark-bmenu-list)
+(global-set-key (kbd "s-<f13>") 'kill-other-buffers)
 #+END_SRC
+
+* Custom file Locations
+#+BEGIN_SRC emacs-lisp
+(defun gtd ()
+   (interactive)
+   (find-file (concat my-org-dir "/gtd.org")))
+(defun journal ()
+   (interactive)
+   (find-file (concat my-org-dir "/journal.org")))
+(defun notes ()
+   (interactive)
+   (find-file (concat my-org-dir "/notes.org")))
+(defun qa ()
+  (interactive)
+  (find-file (concat my-org-dir "/qa.org")))
+(defun emacsconfig()
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+#+END_SRC
+
 * Temp
   Just some temp settings
