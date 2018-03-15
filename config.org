@@ -461,7 +461,14 @@ Set up some global key bindings that integrate with Org Mode features.
 (bind-key "C-c C-<return>" 'org-toggle-heading)
 #+end_src
 
-*** Org agenda
+** Org Task List
+Here you can define the default task list...
+#+BEGIN_SRC emacs-lisp
+;; (setq org-tag-alist '(
+;;("@work" . ?w) ("@home" . ?h) ("laptop" . ?l)))
+#+END_SRC
+
+** Org agenda
 
 Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]].
 
@@ -472,7 +479,7 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
                     '("~/v4/agenda"))))
 #+end_src
 
-*** Org capture
+** Org capture
 
 #+begin_src emacs-lisp
 (bind-key "C-c c" 'org-capture)
@@ -508,6 +515,11 @@ speed keys in Org mode]].
 Indent mode by default...
 #+BEGIN_SRC emacs-lisp
 (setq org-startup-indented t)
+#+END_SRC
+
+Log the done time of todo items
+#+BEGIN_SRC emacs-lisp
+(setq org-log-done 'time)
 #+END_SRC
 
 
