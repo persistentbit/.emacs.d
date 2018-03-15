@@ -499,13 +499,22 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 ** Org capture
 
 #+begin_src emacs-lisp
-(bind-key "C-c c" 'org-capture)
+(bind-key "<f9>" 'org-capture)
 #+end_src
 
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
-      '(("t" "todo" entry (file+headline (concat my-org-dir "/todo.org") "Tasks")
-         "* TODO [#A] %?")))
+ '(("t" "Todo" entry (file+headline "~/ownCloud/org/gtd.org" "Tasks")
+        "* TODO %?\n  %i\n  %a")
+    ("j" "Journal" entry (file+olp+datetree
+ "~/ownCloud/org/journal.org")
+        "* %?\nEntered on %U\n  %i\n  %a")
+ ("a" "Q&A" entry (file+olp+datetree
+ "~/ownCloud/org/qa.org")
+        "* %?\nEntered on %U\n  %i\n  %a")
+    ("n" "Notes" entry (file+olp+datetree
+ "~/ownCloud/org/notes.org")
+        "* %?\nEntered on %U\n  %i\n  %a")))
 #+END_SRC
 
 ** Org setup
@@ -631,6 +640,22 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 (defun gtd ()
    (interactive)
    (find-file (concat my-org-dir "/gtd.org")))
+(defun journal ()
+   (interactive)
+   (find-file (concat my-org-dir "/journal.org")))
+(defun notes ()
+   (interactive)
+   (find-file (concat my-org-dir "/notes.org")))
+(defun qa ()
+  (interactive)
+  (find-file (concat my-org-dir "/qa.org")))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-targets
+      '(("~/ownCloud/org/gtd.org" :maxlevel . 1)
+        ("~/ownCloud/org/notes.org" :maxlevel . 2)
+        ("~/ownCloud/org/journal.org" :maxlevel . 2)
+        ("~/ownCloud/done.org" :maxlevel . 2)))
 #+END_SRC
 * Tramp
 
