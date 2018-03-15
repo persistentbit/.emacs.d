@@ -631,7 +631,6 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 (defun gtd ()
    (interactive)
    (find-file (concat my-org-dir "/gtd.org")))
-)
 #+END_SRC
 * Tramp
 
