@@ -626,6 +626,13 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
   (add-hook 'org-mode-hook #'org-bullets-mode))
 #+END_SRC
 
+* Getting-Things-Done
+#+BEGIN_SRC emacs-lisp
+(defun gtd ()
+   (interactive)
+   (find-file (concat my-org-dir "/gtd.org")))
+)
+#+END_SRC
 * Tramp
 
 #+begin_src emacs-lisp :tangle no
