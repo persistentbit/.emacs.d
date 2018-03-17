@@ -554,7 +554,24 @@ Log the done time of todo items
 #+BEGIN_SRC emacs-lisp
 (setq org-log-done 'time)
 #+END_SRC
+When on a link:
+#+BEGIN_SRC emacs-lisp
+(setq org-return-follows-link t)
 
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun make-orgcapture-frame ()
+  "Create a new frame and run org-capture."
+  (interactive)
+  (make-frame '((name . "remember") (width . 80) (height . 16)
+                (top . 400) (left . 300)
+                (font . "-apple-Monaco-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+                ))
+  (select-frame-by-name "remember")
+  (org-capture))
+
+#+END_SRC
 
 ** Org tags
 
@@ -648,7 +665,7 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 (setq org-refile-targets
       '(("~/ownCloud/org/gtd.org" :maxlevel . 1)
         ("~/ownCloud/org/notes.org" :maxlevel . 2)
-        ("~/ownCloud/org/ideaso.org" :maxlevel . 2)
+        ("~/ownCloud/org/ideas.org" :maxlevel . 2)
         ("~/ownCloud/org/journal.org" :maxlevel . 2)
         ("/ownCloud/org/how.org" :maxlevel . 2)
         ("/ownCloud/org/docs.org" :maxlevel . 2)
