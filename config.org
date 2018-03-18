@@ -11,6 +11,26 @@ a fantastic way to manage package configurations.
       user-mail-address "peter@petermuys.com")
 #+end_src
 
+* modeline
+Better looking mode line, based on spacemacs
+#+BEGIN_SRC emacs-lisp
+(use-package spaceline
+  :ensure t
+  :config 
+  (require 'spaceline-config)
+  (setq powerline-default-separator (quote arrow))
+  (spaceline-spacemacs-theme))
+#+END_SRC
+Using package diminish to clean up some stuff from the mode line 
+#+BEGIN_SRC emacs-lisp
+(use-package diminish
+  :ensure t
+  :init
+  (diminish 'Gitgutter)
+  (diminish 'yas)
+  (diminish 'Helm)
+  (diminish 'which-key-mode))
+#+END_SRC
 * Server Start
 #+BEGIN_SRC emacs-lisp
 (server-start)
