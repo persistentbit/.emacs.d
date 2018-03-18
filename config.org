@@ -1686,6 +1686,27 @@ Remove the ls does not support dired error message
 (when (string= system-type "darwin")       
   (setq dired-use-ls-dired nil))
 #+END_SRC
+
+* Org-mode encryption
+#+BEGIN_SRC emacs-lisp
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  (setq-default epa-file-encrypt-to "peter@petermuys.com")
+(setq org-crypt-key nil)
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+
+(setq auto-save-default nil)
+  ;; Auto-saving does not cooperate with org-crypt.el: so you need
+  ;; to turn it off if you plan to use org-crypt.el quite often.
+  ;; Otherwise, you'll get an (annoying) message each time you
+  ;; start Org.
+
+  ;; To turn it off only locally, you can insert this:
+  ;;
+  ;; # -*- buffer-auto-save-file-name: nil; -*-
+#+END_SRC
 * Custom file Locations
 #+BEGIN_SRC emacs-lisp
 (defun gtd ()
@@ -1709,6 +1730,9 @@ Remove the ls does not support dired error message
 (defun docs ()
   (interactive)
   (find-file (concat my-org-dir "/docs.org")))
+(defun checklists()
+  (interactive)
+  (find-file (concat my-org-dir "/checklists.org")))
 (defun emacsconfig()
   (interactive)
   (find-file "~/.emacs.d/config.org"))
