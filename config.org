@@ -1776,3 +1776,11 @@ Remove the ls does not support dired error message
 
 * Temp
   Just some temp settings
+#+BEGIN_SRC emacs-lisp
+(use-package imenu-anywhere
+  :ensure t)
+(global-set-key (kbd "C-.") 'imenu-anywhere)
+#+END_SRC
+
+#+RESULTS:
+: imenu-anywhere
