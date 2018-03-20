@@ -29,8 +29,10 @@ Using package diminish to clean up some stuff from the mode line
   (diminish 'Gitgutter)
   (diminish 'yas)
   (diminish 'Helm)
+  (diminish 'rainbow-mode)
   (diminish 'which-key-mode))
 #+END_SRC
+
 * Server Start
 #+BEGIN_SRC emacs-lisp
 (server-start)
@@ -1698,6 +1700,17 @@ Convenience bindings to use doc-view with the arrow keys.
 (global-set-key (kbd "<f2>") 'bookmark-jump)
 (global-set-key (kbd "C-<f2>") 'bookmark-bmenu-list)
 (global-set-key (kbd "s-<f13>") 'kill-this-buffer)
+(global-set-key (kbd "C-M-s-k") 'kill-this-buffer)
+(global-set-key (kbd "C-M-s-<left>") 'previous-buffer)
+(global-set-key (kbd "C-M-s-<right>") 'next-buffer)
+(global-set-key (kbd "C-M-s-f") 'helm-find-files)
+(global-set-key (kbd "C-M-s-s") 'save-some-buffers)
+(global-set-key (kbd "C-M-s-!") 'delete-other-windows)
+(global-set-key (kbd "C-M-s-@") 'vsplit-other-window)
+(global-set-key (kbd "C-M-s-#") 'hsplit-other-window)
+(global-set-key (kbd "C-M-s-)") 'delete-window)
+(global-set-key (kbd "C-M-s-b") 'helm-buffers-list)
+(global-set-key (kbd "C-M-s-g") 'magit-status)
 #+END_SRC
 
 * MacOs Specific
