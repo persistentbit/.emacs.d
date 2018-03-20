@@ -1443,11 +1443,11 @@ creating a buffer to do some scratch work or reusing the initial
 #+end_src
 
 ** Shell pop
-
+Popup a shell windows with Hyper-t , to close, use the same button: Hyper-t
 #+BEGIN_SRC emacs-lisp
 (use-package shell-pop
   :ensure t
-  :bind ("M-<f12>" . shell-pop))
+  :bind ("C-M-s-t" . shell-pop))
 #+END_SRC
 
 ** SLIME
