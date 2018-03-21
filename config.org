@@ -1713,6 +1713,7 @@ Convenience bindings to use doc-view with the arrow keys.
 (global-set-key (kbd "C-M-s-g") 'magit-status)
 (global-set-key (kbd "C-M-s-+") 'text-scale-increase)
 (global-set-key (kbd "C-M-s-_") 'text-scale-decrease)
+(global-set-key (kbd "C-M-s-p") 'projectile-find-file)
 #+END_SRC
 
 * MacOs Specific
