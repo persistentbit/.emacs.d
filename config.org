@@ -1711,6 +1711,8 @@ Convenience bindings to use doc-view with the arrow keys.
 (global-set-key (kbd "C-M-s-)") 'delete-window)
 (global-set-key (kbd "C-M-s-b") 'helm-buffers-list)
 (global-set-key (kbd "C-M-s-g") 'magit-status)
+(global-set-key (kbd "C-M-s-+") 'text-scale-increase)
+(global-set-key (kbd "C-M-s-_") 'text-scale-decrease)
 #+END_SRC
 
 * MacOs Specific
