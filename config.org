@@ -202,8 +202,9 @@ And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
-             '(font . "PragmataPro-14"))
-(set-frame-font "PragmataPro-14")
+             '(font . "PragmataPro-12"))
+(set-frame-font "PragmataPro-12")
+
 #+end_src
 
 Note: To view all fonts that are available to use, run the following:
@@ -801,7 +802,7 @@ and allows you.
 #+end_src
 
 * Whitespace mode
-
+In whitespace mode, the whitespace in the buffer has another color
 #+begin_src emacs-lisp
 (use-package whitespace
   :bind ("s-<f10>" . whitespace-mode))
@@ -852,7 +853,7 @@ what I have them set to (with respect to Dvorak, of course).
 
 ** Android mode
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package android-mode
   :ensure t
   :defer t)
@@ -1247,7 +1248,7 @@ Starting to use Racket now, mainly for programming paradigms class,
 though I'm looking forward to some "REPL-driven development" whenever
 I get the chance.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package racket-mode
   :ensure t
   :commands racket-mode
@@ -1269,7 +1270,7 @@ aren't constrainted within Emacs; there's the
 =restclient-copy-curl-command= to get the equivalent =curl= call
 string to keep things portable.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package restclient
   :ensure t
   :mode ("\\.restclient\\'" . restclient-mode))
@@ -1315,7 +1316,7 @@ http://www.masteringemacs.org/article/smart-scan-jump-symbols-buffer
 Smex integrates ido with ~M-x~. I used to use this before moving on to
 [[*Helm][helm]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package smex
   :if (not (featurep 'helm-mode))
   :ensure t
@@ -1326,7 +1327,7 @@ Smex integrates ido with ~M-x~. I used to use this before moving on to
 
 Live coding for HTML/CSS/JavaScript.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package skewer-mode
   :commands skewer-mode
   :ensure t
@@ -1345,7 +1346,7 @@ around so much.
 
 ** Typescript mode
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package typescript-mode
   :ensure t
   :defer t)
@@ -1493,7 +1494,7 @@ while still being in org mode.
 
 ** Virtualenvwrapper
 Used for Python
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 
 (use-package virtualenvwrapper
   :ensure t
@@ -1503,8 +1504,8 @@ Used for Python
 #+END_SRC
 ** XQuery mode
 
-#+BEGIN_SRC emacs-lisp
-(use-package xquery-mode
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package xquery-mode 
   :ensure t
   :defer t)
 #+END_SRC
@@ -1552,7 +1553,7 @@ username, I use the hostname. The shell command ~hostname -s~ gets the
 hostname for the computer without any "domain information," such as
 the ".local" suffix.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (require 'subr-x) ;; #'string-trim
 (defvar mai/user-settings-dir nil
   "The directory with user-specific Emacs settings for this
@@ -1614,7 +1615,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 
 ** Rust
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package rust-mode
   :ensure t
   :defer t)
@@ -1783,10 +1784,11 @@ Remove the ls does not support dired error message
     (setq ac-dwim  t)
     (setq ac-fuzzy-enable t)
 
-    (use-package ac-dabbrev
-      :config
-      (progn
-        (add-to-list 'ac-sources 'ac-source-dabbrev)))
+;    (use-package ac-dabbrev
+;      :config
+;      (progn
+;        (add-to-list 'ac-sources 'ac-source-dabbrev)))
+
 
     (setq ac-modes '(js3-mode
                      emacs-lisp-mode
