@@ -1868,6 +1868,9 @@ Remove the ls does not support dired error message
 (defun emacsconfig()
   (interactive)
   (find-file "~/.emacs.d/config.org"))
+(defun versie4()
+  (interactive)
+  (find-file (concat my-org-dir "/v4/v4.org")))
 #+END_SRC
 
 * Temp
